@@ -17,6 +17,11 @@ const (
 	CMDNO_STOP_PULL = 5
 )
 
+func writeHtmlErrorResponse(w http.ResponseWriter, status int, err string) {
+	w.WriteHeader(status)
+	w.Write([]byte(err))
+}
+
 type comHttpResp struct {
 	ErrNo  int         `json:"errNo"`
 	ErrMsg string      `json:"errMsg"`
