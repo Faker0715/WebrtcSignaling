@@ -18,7 +18,7 @@ var remoteStream;
 var lastConnectionState = "";
 
 function startPull() {
-    console.log("send push: /signaling/pull");
+    console.log("send pull: /signaling/pull");
 
     $.post("/signaling/pull",
         {"uid": uid, "streamName": streamName, "audio": audio, "video": video},
@@ -32,28 +32,32 @@ function startPull() {
             } else {
                 $("#tips1").html("<font color='red'>拉流请求失败!</font>");
             }
+
         },
         "json"
     );
 }
-function stopPull(){
-    console.log("send stopPush: /signaling/stopPull");
 
-    // 关闭资源
+function stopPull() {
+    console.log("send stop pull: /signaling/stoppull");
+
     remoteVideo.srcObject = null;
-    if(remoteStream && remoteStream.getAudioTracks()){
+    if (remoteStream && remoteStream.getAudioTracks()) {
         remoteStream.getAudioTracks()[0].stop();
     }
-    if(remoteStream && remoteStream.getVideoTracks()){
+
+    if (remoteStream && remoteStream.getVideoTracks()) {
         remoteStream.getVideoTracks()[0].stop();
     }
-    if(pc){
+
+    if (pc) {
         pc.close();
         pc = null;
     }
-    $("#tips1").html("")
-    $("#tips2").html("")
-    $("#tips3").html("")
+
+    $("#tips1").html("");
+    $("#tips2").html("");
+    $("#tips3").html("");
 
     $.post("/signaling/stoppull",
         {"uid": uid, "streamName": streamName},
@@ -67,6 +71,7 @@ function stopPull(){
         },
         "json"
     );
+
 }
 
 function sendAnswer(answerSdp) {
@@ -100,20 +105,25 @@ function pullStream() {
         lastConnectionState = pc.iceConnectionState;
     }
 
-    pc.onaddstream = function (e){
+    pc.onaddstream = function(e) {
         remoteStream = e.stream;
         remoteVideo.srcObject = e.stream;
     }
+
     console.log("set remote sdp start");
+
     pc.setRemoteDescription(offer).then(
         setRemoteDescriptionSuccess,
         setRemoteDescriptionError
     );
 }
 
-
 function setRemoteDescriptionSuccess() {
     console.log("pc set remote sdp success");
+    pc.createAnswer().then(
+        createSessionDescriptionSuccess,
+        createSessionDescriptionError
+    );
 }
 
 function createSessionDescriptionSuccess(answer) {
@@ -128,11 +138,7 @@ function createSessionDescriptionSuccess(answer) {
 }
 
 function setLocalDescriptionSuccess() {
-    console.log("set local description success");
-    pc.createAnswer().then(
-        createSessionDescriptionSuccess,
-        createSessionDescriptionError
-    );
+    console.log("set local sdp success");
 }
 
 function setRemoteDescriptionError(error) {
@@ -146,5 +152,6 @@ function setLocalDescriptionError(error) {
 function createSessionDescriptionError(error) {
     console.log("pc create answer error: " + error);
 }
+
 
 
