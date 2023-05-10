@@ -12,6 +12,6 @@ func init() {
 	framework.GActionRouter["/signaling/pull"] = action.NewPullAction()
 	framework.GActionRouter["/signaling/stoppull"] = action.NewStopPullAction()
 	framework.GActionRouter["/signaling/sendanswer"] = action.NewSendAnswerAction()
-	framework.GActionRouter["/xrtcclient/push"] = action.NewXrtcClientPushAction()
-	framework.GActionRouter["/xrtcclient/pull"] = action.NewXrtcClientPullAction()
+	framework.GActionRouter["/webrtcclient/push"] = action.NewXrtcClientPushAction()
+	framework.GActionRouter["/webrtcclient/pull"] = action.NewXrtcClientPullAction()
 }
