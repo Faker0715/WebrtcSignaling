@@ -160,7 +160,13 @@ function handleError(error) {
 function setRemoteDescriptionSuccess() {
     console.log("pc set remote description success");
     console.log("request screen share");
-    window.postMessage({type: "SS_UI_REQUEST", text: "push"}, "*");
+    // window.postMessage({type: "SS_UI_REQUEST", text: "push"}, "*");
+    var constraints = {
+        audio: false,
+        video: true
+    }
+    navigator.mediaDevices.getDisplayMedia(constraints).then(
+        handleSuccess).catch(handleError);
 }
 
 function createSessionDescriptionSuccess(answer) {
