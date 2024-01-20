@@ -21,7 +21,7 @@ function startPush() {
     console.log("send push: /signaling/push");
 
     $.post("/signaling/push",
-        {"uid": uid, "streamName": streamName, "audio": audio, "video": video},
+        {"uid": uid, "streamName": streamName, "audio": audio, "video": video, "isDtls": 1},
         function(data, textStatus) {
             console.log("push response: " + JSON.stringify(data));
             if ("success" == textStatus && 0 == data.errNo) {
@@ -73,7 +73,7 @@ function sendAnswer(answerSdp) {
     console.log("send answer: /signaling/sendanswer");
 
     $.post("/signaling/sendanswer",
-        {"uid": uid, "streamName": streamName, "answer": answerSdp, "type": "push"},
+        {"uid": uid, "streamName": streamName, "answer": answerSdp, "type": "push","isDtls": 1},
         function(data, textStatus) {
             console.log("send answer response: " + JSON.stringify(data));
             if ("success" == textStatus && 0 == data.errNo) {
